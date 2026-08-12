@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <Button>
-      Hello World
-    </Button>
+    <div>
+      <p className="text-rose-500">
+        Hello world
+      </p>
+    </div>
   );
 }
