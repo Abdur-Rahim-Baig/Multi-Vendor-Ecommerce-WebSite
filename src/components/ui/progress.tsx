@@ -15,7 +15,7 @@ function Progress({
       value={value}
       data-slot="progress"
       className={cn("flex flex-wrap gap-3", 
-        "border bg-transparent rounded",
+        "border bg-white rounded",
         className)}
       {...props}
     >
