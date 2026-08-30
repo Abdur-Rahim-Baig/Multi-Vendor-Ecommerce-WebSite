@@ -1,19 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import {
-  CategoryWithSubcategories,
   SubcategoryMenu,
 } from "./SubcategoryMenu";
 import { useDropdownPosition } from "./use-dropdown-position";
+import { CustomCategory } from "../type";
 
 
 interface props {
-  category: CategoryWithSubcategories;
+  category: CustomCategory;
   isActive?: boolean;
   isNavigationHovered?: boolean;
 }
@@ -32,16 +33,31 @@ export const CategoryDropdown = ({category, isActive, isNavigationHovered}: prop
 
   const onMouseLeave = () => setIsOpen(false);
 
+  //Good for mobile but need further improvements
+  /*const toggleDropdown = () => {
+    if(category.subcategories?.docs?.length) {
+      setIsOpen(!isOpen);
+    }
+  };
+  */
+
   return (
     <div className="relative"
       ref={dropdownRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}>
+      {/* onClick={toggleDropdown} */}
       <div className="relative">  
-        <Button variant="elevated" className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
-          isActive && !isNavigationHovered && "bg-white border-primary"
-        )}>
-          {category.name}
+        <Button
+          variant="elevated"
+          className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
+            isActive && !isNavigationHovered && "bg-white border-primary",
+            isOpen && "bg-white border-primary"
+          )}
+        >
+          <Link href={`/${category.slug === "all" ? "" : category.slug}`} className="inline-flex items-center">
+            {category.name}
+          </Link>
         </Button>
         {category.subcategories && category.subcategories.length>0 && <div 
         className={cn(
