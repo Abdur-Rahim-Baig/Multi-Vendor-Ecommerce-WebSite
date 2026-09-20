@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 
 import { CategoryDropdown } from "./category-dropdown";
 import { CategoriesSidebar } from "./categories-sidebar";
-import { CustomCategory } from "../type";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 
 interface Props {
-  data: CustomCategory[];
+  data: CategoriesGetManyOutput;
 };
 
 export const Categories = ({ data }: Props) => {
@@ -60,7 +60,7 @@ export const Categories = ({ data }: Props) => {
   return (
     <div className="relative w-full">
       {/*category sidebar*/}
-      <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} data={data}/>
+      <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} />
 
  {/*hidden div to measure all items*/}
       <div 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Category } from "@/payload-types";
-import { CustomCategory } from "../type";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 
 export type CategoryWithSubcategories = Category & {
@@ -11,7 +11,7 @@ export type CategoryWithSubcategories = Category & {
 };
 
 interface Props {
-  category: CustomCategory;
+  category: CategoriesGetManyOutput[1];
   isOpen: boolean;
   position: {
     top: number;
