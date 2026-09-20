@@ -170,6 +170,12 @@ export interface Media {
 export interface Category {
   id: string;
   name: string;
+  slug: string;
+  color?: string | null;
+  parent?: string | Category | null;
+  subcategories?: {
+    docs?: Category[];
+  };
   updatedAt: string;
   createdAt: string;
 }
