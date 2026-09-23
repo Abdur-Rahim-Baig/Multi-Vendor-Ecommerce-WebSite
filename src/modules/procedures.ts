@@ -8,7 +8,7 @@ type CategoryWithRelations = Category & {
 export const categoriesRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
 
-      const data = await ctx.payload.find({
+  const data = await ctx.db.find({
     collection: "categories",
     depth: 1,
     pagination: false,

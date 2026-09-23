@@ -26,7 +26,7 @@ export const CategoryDropdown = ({category, isActive, isNavigationHovered}: prop
   const { getDropdownPosition } = useDropdownPosition(dropdownRef);
 
   const onMouseEnter = () => {
-    if(category.subcategories){
+    if (category.subcategories && category.subcategories.length > 0) {
       setIsOpen(true);
     }
   };
