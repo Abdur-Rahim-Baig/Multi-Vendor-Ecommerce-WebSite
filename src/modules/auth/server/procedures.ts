@@ -1,11 +1,11 @@
 import z from "zod";
 
-import { headers as getHeaders, cookies as getcookies} from "next/headers";
+import { headers as getHeaders } from "next/headers";
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 
-import { AUTH_COOKIE } from "../constants";
+import { generateAuthCookie } from "../utils";
 import { loginSchema, registerSchema } from "../schemas";
 
 
@@ -16,10 +16,6 @@ export const authRouter = createTRPCRouter({
     // Use the 'db' context to call the auth method
     const session =await  ctx.db.auth({ headers });
     return session;
-  }),
-  logout: baseProcedure.mutation(async () => {
-    const cookies = await getcookies();
-    cookies.delete(AUTH_COOKIE);
   }),
   register: baseProcedure
   .input(registerSchema)
@@ -64,18 +60,20 @@ export const authRouter = createTRPCRouter({
       throw new TRPCError({
         code: "UNAUTHORIZED",
         message: "Failed to Login",
-      })
+      });
     }
 
-    const cookies = await getcookies();
-    cookies.set({
-      name: AUTH_COOKIE,
+    await generateAuthCookie({
+      prefix: ctx.db.config.cookiePrefix,
       value: data.token,
-      httpOnly: true,
-      path:"/",
-      // sameSite: "none",
-      // Domain: ""
     });
+
+    return data;await generateAuthCookie({
+      prefix: ctx.db.config.cookiePrefix,
+      value: data.token,
+    });
+
+    return data;
   }),
   login: baseProcedure
   .input(loginSchema)
@@ -95,14 +93,9 @@ export const authRouter = createTRPCRouter({
       })
     }
 
-    const cookies = await getcookies();
-    cookies.set({
-      name: AUTH_COOKIE,
+    await generateAuthCookie({
+      prefix: ctx.db.config.cookiePrefix,
       value: data.token,
-      httpOnly: true,
-      path:"/",
-      // sameSite: "none",
-      // Domain: ""
     });
 
     return data;
