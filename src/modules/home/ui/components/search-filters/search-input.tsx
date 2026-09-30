@@ -44,7 +44,7 @@ export const SearchInput = ({
         >
           <Link href="/library">
           <BookmarkCheckIcon />
-          Library
+            Library
           </Link>
         </Button>
       )}
