@@ -2,6 +2,9 @@ import type { CollectionConfig } from "payload";
 
 export const Categories: CollectionConfig = {
   slug: "categories",
+  admin: {
+    useAsTitle: "name",
+  },
   fields: [
     {
       name: "name",
@@ -18,6 +21,9 @@ export const Categories: CollectionConfig = {
     {
       name: "color",
       type: "text",
+      admin: {
+        description: "Color of the category",
+      }
     },
     {
       name: "parent",
