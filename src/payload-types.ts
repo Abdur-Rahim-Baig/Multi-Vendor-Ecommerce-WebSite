@@ -71,17 +71,23 @@ export interface Config {
     media: Media;
     categories: Category;
     products: Product;
+    tags: Tag;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    categories: {
+      subcategories: 'categories';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -127,10 +133,10 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  username: string;
   updatedAt: string;
   createdAt: string;
   email: string;
-  username: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -174,10 +180,15 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
+  /**
+   * Color of the category
+   */
   color?: string | null;
-  parent?: string | Category | null;
+  parent?: (string | null) | Category;
   subcategories?: {
-    docs?: Category[];
+    docs?: (string | Category)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
   };
   updatedAt: string;
   createdAt: string;
@@ -190,10 +201,25 @@ export interface Product {
   id: string;
   name: string;
   description?: string | null;
+  /**
+   * Price in USD
+   */
   price: number;
-  category?: string | Category | null;
-  image?: string | Media | null;
-  refundPolicy?: '30-days' | '14-days' | '7-days' | '3-days' | '1-day' | 'No-Refund' | null;
+  category?: (string | null) | Category;
+  tags?: (string | Tag)[] | null;
+  image?: (string | null) | Media;
+  refundPolicy?: ('30-days' | '14-days' | '7-days' | '3-days' | '1-day' | 'No-Refund') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  name: string;
+  products?: (string | Product)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -232,6 +258,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: string | Category;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: string | Tag;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -280,10 +314,10 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  username?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
-  username?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
   salt?: T;
@@ -322,6 +356,10 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
+  color?: T;
+  parent?: T;
+  subcategories?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -334,8 +372,19 @@ export interface ProductsSelect<T extends boolean = true> {
   description?: T;
   price?: T;
   category?: T;
+  tags?: T;
   image?: T;
   refundPolicy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  products?: T;
   updatedAt?: T;
   createdAt?: T;
 }
