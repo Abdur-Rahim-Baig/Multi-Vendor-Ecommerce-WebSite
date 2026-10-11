@@ -2,17 +2,21 @@ import z from "zod";
 import { Sort, Where } from "payload";
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category } from "@/payload-types";
+import { Category, Media } from "@/payload-types";
 import { sortValues } from "../search-param";
+import { DEFAULT_LIMIT } from "@/constants";
 
 export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
-    .input(z.object({
-      category: z.string().nullable().optional(),
-      minPrice: z.string().nullable().optional(),
-      maxPrice: z.string().nullable().optional(),
-      tags: z.array(z.string()).nullable().optional(),
-      sort: z.enum(sortValues).nullable().optional(),
+    .input(
+      z.object({
+        cursor: z.number().default(1),
+        limit: z.number().default(DEFAULT_LIMIT),
+        category: z.string().nullable().optional(),
+        minPrice: z.string().nullable().optional(),
+        maxPrice: z.string().nullable().optional(),
+        tags: z.array(z.string()).nullable().optional(),
+        sort: z.enum(sortValues).nullable().optional(),
     }))
     .query(async ({ ctx, input }) => {
       const where: Where = {
@@ -94,8 +98,16 @@ export const productsRouter = createTRPCRouter({
         depth: 1,
         where,
         sort,
+        page: input.cursor,
+        limit: input.limit,
       });
 
-      return data;
+      return {
+        ...data,
+        docs: data.docs.map((doc) => ({
+          ...doc,
+          image:  doc.image as Media | null,
+        })),
+      };
     }),
 });
