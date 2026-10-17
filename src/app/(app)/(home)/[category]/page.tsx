@@ -29,7 +29,7 @@ const page = async ({ params, searchParams }: Props) => {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductListView category={category} />
     </HydrationBoundary>
-  )
+  );
 };
 
 export default page;
