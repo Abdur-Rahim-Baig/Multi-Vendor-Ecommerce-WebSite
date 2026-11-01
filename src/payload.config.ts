@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import sharp from "sharp";
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 
+import type { Config } from "./payload-types";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Categories } from "./collections/Categories";
@@ -34,7 +35,7 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    multiTenantPlugin({
+    multiTenantPlugin<Config>({
       collections: {
         products: {},
       },
