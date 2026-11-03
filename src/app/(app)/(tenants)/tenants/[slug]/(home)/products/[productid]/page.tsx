@@ -10,8 +10,9 @@ const Page = async ({ params }: Props) => {
   const { productid, slug } = await params;
   
     const queryClient = getQueryClient();
-    void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug       
-    }));
+    await queryClient.prefetchQuery(
+      trpc.products.getOne.queryOptions({ id: productid }),
+    );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
