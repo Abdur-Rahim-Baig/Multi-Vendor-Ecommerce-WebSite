@@ -45,8 +45,8 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
         <InboxIcon />
         <p className="text-base font-medium">No products found</p>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
