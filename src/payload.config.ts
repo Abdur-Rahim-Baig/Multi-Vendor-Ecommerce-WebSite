@@ -9,6 +9,7 @@ import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 import type { Config } from "./payload-types";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
+import { Orders } from "./collections/Orders";
 import { Categories } from "./collections/Categories";
 import { Products } from "./collections/products";
 import { Tags } from "./collections/Tags";
@@ -24,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [ Users, Media, Categories, Products, Tags, Tenants ],
+  collections: [ Users, Media, Categories, Products, Tags, Tenants, Orders ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
