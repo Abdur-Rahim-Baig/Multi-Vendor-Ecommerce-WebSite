@@ -1,6 +1,7 @@
 "use client";
 
-import { BookmarkCheckIcon, Link, ListFilterIcon, SearchIcon } from "lucide-react";
+import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
+import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
 
@@ -38,15 +39,13 @@ export const SearchInput = ({
         <ListFilterIcon />
       </Button>
       {session.data?.user && (
-        <Button
-        asChild
-        variant="elevated"
+        <Link
+        href="/library"
+        className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-md border border-black bg-white px-4 font-medium shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-pink-400"
         >
-          <Link href="/library">
           <BookmarkCheckIcon />
             Library
-          </Link>
-        </Button>
+        </Link>
       )}
     </div>
   );
