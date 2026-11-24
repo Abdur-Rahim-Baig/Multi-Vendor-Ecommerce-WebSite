@@ -2,10 +2,11 @@ import z from "zod";
 import { Sort, Where } from "payload";
 import { headers as getHeaders } from "next/headers";
 
-import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category, Media, Tenant } from "@/payload-types";
-import { sortValues } from "../search-param";
 import { DEFAULT_LIMIT } from "@/constants";
+import { Category, Media, Tenant } from "@/payload-types";
+import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+
+import { sortValues } from "../search-param";
 
 export const productsRouter = createTRPCRouter({
   getOne: baseProcedure
@@ -22,6 +23,9 @@ export const productsRouter = createTRPCRouter({
           collection: "products",
           id: input.id,
           depth: 2,
+          select: {
+            content: false,
+          },
         });
 
         let isPurchased = false;
@@ -200,6 +204,9 @@ export const productsRouter = createTRPCRouter({
         sort,
         page: input.cursor,
         limit: input.limit,
+        select: {
+          content: false,
+        },
       });
 
       const dataWithSummarizedReviews = await Promise.all(
