@@ -6,6 +6,8 @@ import { fileURLToPath } from "url";
 import sharp from "sharp";
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 
+import { isSuperAdmin } from "./lib/access";
+
 import type { Config } from "./payload-types";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
@@ -15,7 +17,6 @@ import { Tenants } from "./collections/Tenants";
 import { Reviews } from "./collections/Reviews";
 import { Products } from "./collections/products";
 import { Tags } from "./collections/Tags";
-import { isSuperAdmin } from "./lib/access";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -26,6 +27,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      beforeNavLinks: ["@/components/stripe-verify#StripeVerify"],
+    }
   },
   collections: [ Users, Media, Categories, Products, Tags, Tenants, Orders, Reviews ],
   editor: lexicalEditor(),

@@ -7,13 +7,14 @@ import { TRPCError } from "@trpc/server";
 
 import { generateAuthCookie } from "../utils";
 import { loginSchema, registerSchema } from "../schemas";
+import { createConnectedAccount } from "@/lib/stripe";
 
 
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
     const headers = await getHeaders();
 
-    // Use the 'db' context to call the auth method
+    // Use the "db" context to call the auth method
     const session =await  ctx.db.auth({ headers });
     return session;
   }),
@@ -39,12 +40,34 @@ export const authRouter = createTRPCRouter({
       });
     }
 
+    let account;
+
+    try {
+      account = await createConnectedAccount({
+        displayName: input.username,
+        email: input.email,
+      });
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: error instanceof Error ? error.message : "Failed to create Stripe account",
+        cause: error,
+      });
+    }
+
+    if (!account) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Failed to create Stripe account",
+      });
+    }
+
     const tenant = await ctx.db.create({
       collection: "tenants",
       data: {
         name: input.username,
         slug: input.username,
-        stripeAccountId: "test"
+        stripeAccountId: account.id
       }
     })
 
