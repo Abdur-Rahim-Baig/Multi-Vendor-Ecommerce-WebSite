@@ -86,15 +86,11 @@ export const SignUpView = () => {
                 </span>
               </Link>
               <Button
-              asChild
+              render={<Link prefetch href="/sign-in">Sign In</Link>}
               variant="ghost"
               size="sm"
               className="text-base border-none underline"
-              >
-                <Link prefetch href="/sign-in">
-                  Sign In
-                </Link>
-              </Button>
+              >Sign In</Button>
             </div>
             <h1 className="text-4xl font-medium">
               Join with creators earning money on Funrow

@@ -17,12 +17,9 @@ export const Navbar = ({ slug }: Props) => {
        <p className="text-xl">CheckOut</p>
         <Button
           variant="elevated"
-          asChild
+          render={<Link href={generateTenantURL(slug)}>Continue Shopping</Link>}
         >
-          <Link href={generateTenantURL(slug)}>
-            Continue Shopping
-          </Link>
-          
+          Continue Shopping
         </Button>
       </div>
     </nav>

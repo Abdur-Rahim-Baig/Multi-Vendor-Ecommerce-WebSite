@@ -11,7 +11,9 @@ export const  useCart = ( tenantSlug: string) => {
   const clearCart = useCartStore((state) => state.clearCart);
   const clearAllCarts = useCartStore((state) => state.clearAllCarts);
 
-  const productIds = useCartStore(useShallow((state) => state.tenantCarts[tenantSlug]?.productIds || []));
+  const productIds = useCartStore(
+    useShallow((state) => [...new Set(state.tenantCarts[tenantSlug]?.productIds || [])]),
+  );
 
   const toggleProduct = useCallback((productId: string) => {
     if (productIds.includes(productId)) {

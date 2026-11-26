@@ -18,17 +18,20 @@ export const useCartStore = create<CartState>()(
     (set) => ({
       tenantCarts: {},
       addProduct: (tenantSlug, productId) => 
-        set((state) => ({
-          tenantCarts: {
-            ...state.tenantCarts,
-            [tenantSlug]: {
-              productIds: [
-                ...(state.tenantCarts[tenantSlug]?.productIds || []),
-                productId,
-              ]
-            }
-          }
-        })),
+        set((state) => {
+          const productIds = state.tenantCarts[tenantSlug]?.productIds || [];
+
+          if (productIds.includes(productId)) return state;
+
+          return {
+            tenantCarts: {
+              ...state.tenantCarts,
+              [tenantSlug]: {
+                productIds: [...productIds, productId],
+              },
+            },
+          };
+        }),
       removeProduct: (tenantSlug, productId) => 
         set((state) => ({
           tenantCarts: {
