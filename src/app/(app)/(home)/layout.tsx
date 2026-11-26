@@ -18,16 +18,16 @@ const Layout =  async ({ children }: Props) => {
   );
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-dvh flex-col">
     <Navbar />
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<SearchFiltersLoading />}>
         <SearchFilters /> 
       </Suspense>
     </HydrationBoundary>
-        <div className="flex-1 bg-[#F4F4F0]">
+        <main className="flex-1 bg-[#F4F4F0] pb-[calc(3.5rem+env(safe-area-inset-bottom))]">
           {children}
-        </div>
+        </main>
           <Footer />
       </div>
   );
