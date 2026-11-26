@@ -1,7 +1,9 @@
 import { DEFAULT_LIMIT } from "@/constants";
 import { LibraryView } from "@/modules/library/ui/views/library-views";
+import { ProductViewSkeleton } from "@/modules/library/ui/views/product-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 const Page = async () => {
   const queryClient = getQueryClient();
@@ -11,7 +13,9 @@ const Page = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <LibraryView />
+      <Suspense fallback={<ProductViewSkeleton />}>
+        <LibraryView />
+      </Suspense>
     </HydrationBoundary>
   );
 }

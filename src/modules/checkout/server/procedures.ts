@@ -61,6 +61,8 @@ export const checkoutRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const productIds = [...new Set(input.productIds)];
+
         const products = await ctx.db.find({
           collection: "products",
           depth: 2,
@@ -68,7 +70,7 @@ export const checkoutRouter = createTRPCRouter({
             and: [
               {
                 id: {
-                  in: input.productIds,
+                  in: productIds,
                 }
               },
               {
@@ -76,11 +78,16 @@ export const checkoutRouter = createTRPCRouter({
                   equals: input.tenantId
                 }
               },
+              {
+                isArchived: {
+                  not_equals: true,
+                },
+              }
             ]
           }
         })
 
-        if(products.totalDocs !== input.productIds.length) {
+        if(products.totalDocs !== productIds.length) {
           throw new TRPCError({code: "NOT_FOUND", message: "Products not found"});
         }
 
@@ -166,21 +173,37 @@ export const checkoutRouter = createTRPCRouter({
     .input(
       z.object({
         ids: z.array(z.string()),
+        tenantSlug: z.string().min(1),
       })
     )
     .query(async ({ ctx, input }) => {
+      const productIds = [...new Set(input.ids)];
+
       const data = await ctx.db.find({
         collection: "products",
         depth: 2,
         where: {
-          id: {
-            in: input.ids,
-          },
+          and: [
+            {
+              id: {
+                in: productIds,
+              },
+            },
+            {
+              "tenant.slug": {
+                equals: input.tenantSlug,
+              },
+            },
+            {
+              isArchived: {
+                not_equals: true,
+              },
+            },
+          ],
         },
       });
 
-
-      if(data.totalDocs !== input.ids.length) {
+      if (data.totalDocs !== productIds.length) {
         throw new TRPCError({code: "NOT_FOUND", message: "Products not found"});
       }
 

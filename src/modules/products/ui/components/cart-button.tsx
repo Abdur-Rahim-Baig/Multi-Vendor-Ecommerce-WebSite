@@ -17,12 +17,10 @@ export const CartButton = ({tenantSlug, productId, isPurchased}: Props) => {
     return (
       <Button
         variant="elevated"
-        asChild
+        render={<Link prefetch href={`/library/${productId}`}>View In Library</Link>}
         className="flex-1 font-medium bg-white"
       >
-        <Link prefetch href={`/library/${productId}`}>
-          View In Library
-        </Link>
+        View In Library
       </Button>
     )
   }
