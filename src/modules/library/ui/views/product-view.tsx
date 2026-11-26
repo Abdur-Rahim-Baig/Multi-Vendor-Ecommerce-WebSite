@@ -24,17 +24,19 @@ export const ProductView = ({ productId }: Props) => {
 
   return (
     <div className="min-h-screen bg-white">
-      <nav className="p-4 bg-[#F4F4F0] w-full border-b">
-        <Link href="/library" className="flex items-center gap-2">
-          <ArrowLeftIcon className="size-4"/>
-          <span className="text font-medium">Back to Library</span>
-        </Link>
-      </nav>
-      <header className="bg-[#F4F4F0] py-8 border-b">
-        <div className="max-w-[--breakpoint-xl] mx-auto px-4 lg:px-12">
-          <h1 className="text-[40px] font-medium">{data.name}</h1>
-        </div>
-      </header>
+      <div className="sticky top-0 z-50">
+        <nav className="p-4 bg-[#F4F4F0] w-full border-b">
+          <Link href="/library" className="flex items-center gap-2">
+            <ArrowLeftIcon className="size-4"/>
+            <span className="text font-medium">Back to Library</span>
+          </Link>
+        </nav>
+        <header className="bg-[#F4F4F0] py-8 border-b">
+          <div className="max-w-[--breakpoint-xl] mx-auto px-4 lg:px-12">
+            <h1 className="text-[40px] font-medium">{data.name}</h1>
+          </div>
+        </header>
+      </div>
       <section className="max-w-(--breakpoint-xl) mx-auto px-4 lg:px-12 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
 
@@ -64,7 +66,7 @@ export const ProductView = ({ productId }: Props) => {
 export const ProductViewSkeleton = () => {
   return (
     <div className="min-h-screen bg-white">
-      <nav className="p-4 bg-[#F4F4F0] w-full border-b">
+      <nav className="sticky top-0 z-50 p-4 bg-[#F4F4F0] w-full border-b">
         <div className="flex items-center gap-2">
           <ArrowLeftIcon className="size-4"/>
           <span className="text font-medium">Back to Library</span>
