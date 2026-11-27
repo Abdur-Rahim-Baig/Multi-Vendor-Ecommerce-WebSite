@@ -5,4 +5,9 @@ import { GRAPHQL_POST, REST_OPTIONS } from '@payloadcms/next/routes'
 
 export const POST = GRAPHQL_POST(config)
 
-export const OPTIONS = REST_OPTIONS(config)
+const graphqlOptions = REST_OPTIONS(config)
+
+export const OPTIONS = (request: Request) =>
+	graphqlOptions(request, {
+		params: Promise.resolve({ slug: ['graphql'] }),
+	})

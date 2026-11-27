@@ -53,7 +53,6 @@ export const SignInView = () => {
     defaultValues: {
       email: "",
       password: "",
-      username: "",
     },
   });
 
@@ -70,7 +69,7 @@ export const SignInView = () => {
       >
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit((values) => onSubmit(values))}
             className="flex flex-col gap-8 p-4 lg:p-16"
           >
             <div className="flex items-center justify-between mb-8">  

@@ -11,7 +11,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useTRPC } from "@/trpc/client";
-import { CategoriesGetManyOutput } from "@/modules/categories/types";
+type CategoryItem = {
+  id: string;
+  slug: string;
+  name: string;
+  color?: string | null;
+  subcategories?: CategoryItem[];
+};
 
 interface Props {
   open: boolean;
@@ -28,8 +34,8 @@ export const CategoriesSidebar = ({
 
   const router = useRouter();
 
-  const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput[] | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1] | null>(null);
+  const [parentCategories, setParentCategories] = useState<CategoryItem[] | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(null);
 
   //is we have parent categories, show those, otherwise show root categories
   const currentCategories = parentCategories ?? data ?? [];
@@ -40,9 +46,9 @@ export const CategoriesSidebar = ({
     onOpenChange(open);
   }
 
-  const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
+  const handleCategoryClick = (category: CategoryItem) => {
     if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(category.subcategories as CategoriesGetManyOutput);
+      setParentCategories(category.subcategories);
       setSelectedCategory(category);
     }else {
       // this is a leaf category (no subcategory)
