@@ -139,7 +139,7 @@ export const ProductView = ({ productId, tenantSlug }: Props) => {
                 </div>
 
                 <p className="text-center font-medium">
-                  {data.refundPolicy === "no refund"
+                  {data.refundPolicy === "No-Refund"
                     ? "No refunds available for this product." 
                     : `${data.refundPolicy} money back guarantee for this product.`
                   }
